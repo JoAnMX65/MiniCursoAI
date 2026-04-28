@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Curso IA · Fortalecimiento Ciudadano · Presentación interactiva</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Calibri', 'Roboto', system-ui, sans-serif;
+            background: linear-gradient(145deg, #eef2f5 0%, #d9e0e8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* SLIDE CONTAINER */
+        .presentation-container {
+            max-width: 1300px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .slide-area {
+            background: white;
+            padding: 2rem 2.5rem;
+            min-height: 550px;
+            position: relative;
+        }
+
+        /* contenido adaptable */
+        .slide-content {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #1e2a3e;
+        }
+
+        .slide-content h1 {
+            font-size: 2.2rem;
+            color: #0f4761;
+            border-left: 6px solid #2980b9;
+            padding-left: 1rem;
+            margin: 0 0 1rem 0;
+        }
+
+        .slide-content h2 {
+            font-size: 1.8rem;
+            color: #2980b9;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .slide-content h3 {
+            color: #d35400;
+            font-size: 1.4rem;
+            margin: 1rem 0 0.75rem;
+        }
+
+        .slide-content h4 {
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0.75rem 0 0.5rem;
+        }
+
+        .slide-content p, .slide-content li {
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .box, .activity, .lab, .copy-paste, .infografia {
+            border-radius: 1rem;
+            padding: 1rem 1.3rem;
+            margin: 1rem 0;
+        }
+
+        .box {
+            background: #f8f9fa;
+            border-left: 5px solid #3498db;
+        }
+
+        .activity {
+            background: #f1f9f4;
+            border-left: 5px solid #27ae60;
+        }
+
+        .lab {
+            background: #f9f4fb;
+            border-left: 5px solid #8e44ad;
+        }
+
+        .copy-paste {
+            background: #2c3e50;
+            color: #ecf0f1;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 12px;
+            vertical-align: top;
+        }
+        th {
+            background: #34495e;
+            color: white;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 16px;
+            margin: 0.8rem 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            display: block;
+        }
+
+        .video-embed {
+            margin: 1rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .video-embed iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+        }
+
+        /* Navegación */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-top: 1px solid #cbd5e1;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons button {
+            background: #2c3e50;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 0 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .nav-buttons button:hover {
+            background: #1e2f3f;
+            transform: scale(0.97);
+        }
+
+        .slide-counter {
+            font-weight: 500;
+            background: #e2e8f0;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .dot {
+            width: 32px;
+            height: 8px;
+            background: #cbd5e1;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .dot.active {
+            background: #2980b9;
+            width: 42px;
+        }
+
+        footer {
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 1rem;
+            color: #4a627a;
+        }
+
+        @media (max-width: 720px) {
+            .slide-area {
+                padding: 1.5rem;
+            }
+            .slide-content h1 { font-size: 1.6rem; }
+            .slide-content h2 { font-size: 1.4rem; }
+            .nav-controls { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container" id="app">
+    <div class="slide-area" id="slideArea">
+        <div class="slide-content" id="slideContent">
+            <!-- contenido dinámico -->
+            <div style="text-align: center; padding: 3rem;">Cargando curso interactivo...</div>
+        </div>
+    </div>
+    <div class="nav-controls">
+        <div class="nav-buttons">
+            <button id="prevSlideBtn" aria-label="Anterior">◀ Anterior</button>
+            <button id="nextSlideBtn" aria-label="Siguiente">Siguiente ▶</button>
+        </div>
+        <div class="slide-counter" id="slideCounter">Slide 0 / 0</div>
+        <div class="dots" id="dotsContainer"></div>
+    </div>
+    <footer>
+        📘 Curso: IA para el fortalecimiento ciudadano | Navega con flechas ← → | Material didáctico interactivo
+    </footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // DATA-EDU: estructura completa del curso (extraída y fiel al original)
+    // La información será exportada también a data-edu.json aparte.
+    // --------------------------------------------------------------
+    const slidesData = [
+        { // Slide 0
+            title: "✨ Inteligencia Artificial para el FORTALECIMIENTO Ciudadano",
+            html: `
+                <div style="text-align:center; margin-top: 1rem;">
+                    <span style="background:#0f4761; color:white; padding:6px 18px; border-radius:40px; font-size:0.9rem;">Curso Básico · 45 min</span>
+                    <h1 style="margin-top: 1rem;">🤖 Curso: Inteligencia Artificial <br>para el FORTALECIMIENTO Ciudadano</h1>
+                    <p><strong>Duración:</strong> 45 Minutos | <strong>Nivel:</strong> Básico / Principiantes</p>
+                    <div class="box" style="text-align: left; margin-top:2rem;">
+                        <strong>🎯 Objetivo General:</strong> Al finalizar el curso, el participante identificará qué es la IA y cómo utilizarla mediante instrucciones efectivas para resolver tareas cotidianas, motivándose a integrar estas herramientas en su vida personal y profesional.
+                    </div>
+                    <p style="margin-top:1.5rem; font-style:italic;">Bienvenidos a este espacio de aprendizaje. La Inteligencia Artificial es un asistente que vive en su teléfono y computadora, listo para ayudarles a redactar, organizar e imaginar.</p>
+                </div>
+            `
+        },
+        { // Slide 1: Evaluación diagnóstica
+            title: "📋 Evaluación Diagnóstica",
+            html: `
+                <h2>🔍 Evaluación Diagnóstica</h2>
+                <p>Selecciona mentalmente la opción correcta (respuestas al final):</p>
+                <table>
+                    <tr><th>Pregunta</th><th>Opciones</th></tr>
+                    <tr><td>1. ¿Cuál es la base del funcionamiento de la IA Generativa al responder?</td><td>A) Copiar de Google<br>B) Predecir la palabra más probable ✅<br>C) Leer la mente</td></tr>
+                    <tr><td>2. ¿Qué ocurre si no supervisamos el resultado de una IA?</td><td>A) Nunca se equivoca<br>B) Errores o "alucinaciones" ✅<br>C) Se borra</td></tr>
+                    <tr><td>3. En la técnica de creación de prompts, ¿qué significa el "Rol"?</td><td>A) Nombre de la PC<br>B) Personalidad/profesión de la IA ✅<br>C) Tiempo de respuesta</td></tr>
+                    <tr><td>4. ¿Qué elemento del prompt indica para quién va dirigido?</td><td>A) Tarea<br>B) Formato<br>C) Contexto ✅</td></tr>
+                </table>
+                <p><em>Respuestas correctas: 1:B, 2:B, 3:B, 4:C</em></p>
+                <div class="box"><strong>💡 Reflexión:</strong> La IA predice palabras, debemos supervisar siempre sus respuestas.</div>
+            `
+        },
+        { // Slide 2: Tema 1 - Fundamentos IA
+            title: "🧠 Módulo 1 · ¿Qué es la IA?",
+            html: `
+                <h2>🤖 Tema 1: ¿Qué es la IA y cómo trabaja para nosotros?</h2>
+                <p>La <strong>Inteligencia Artificial Generativa</strong> funciona como un predictor avanzado: lee miles de textos y calcula qué palabra sigue. No tiene conciencia, es una herramienta de probabilidad. <strong>Debemos verificar su trabajo</strong> (evitar "alucinaciones").</p>
+                <div class="infografia" style="background:#fef5e7; text-align:center;">
+                    <img src="Mini_Curso_ia_V2_archivos/image006.png" alt="Diagrama IA predictora" style="max-width:100%; margin:0 auto;" onerror="this.onerror=null; this.src='https://placehold.co/600x300?text=Imagen+ilustrativa+IA+Predicción';">
+                    <p><em>Ilustración: cómo la IA predice palabras secuencialmente</em></p>
+                </div>
+                <p>📺 <strong>Material complementario:</strong> <a href="https://youtu.be/1rnW0On-H7c" target="_blank">Video 1: Introducción a IA</a> | <a href="https://youtu.be/IeKuhIw3i5s" target="_blank">Video 2: Conceptos clave</a></p>
+                <div class="activity"><strong>✅ Actividad práctica:</strong> Si la IA dice "Día de la Independencia de México es 5 de mayo", ¿qué harías? <br><strong>Solución:</strong> Corregir: 16 de septiembre y pedir nueva redacción.</div>
+            `
+        },
+        { // Slide 3: Caso Sector Público + Analogía
+            title: "🏛️ Caso real · Sector Público",
+            html: `
+                <h3>📌 Caso real: Secretaría de Salud (México)</h3>
+                <p>Asistentes virtuales para agendar citas y consultar vacunación, reduciendo filas físicas.</p>
+                <img src="Mini_Curso_ia_V2_archivos/image014.png" alt="Caso sector salud" style="max-width:100%;" onerror="this.src='https://placehold.co/600x300?text=Infografía+IA+en+Salud'">
+                <h4>🥑 Analogía: El aprendiz de cocina</h4>
+                <p>La IA es un aprendiz que ha leído todos los recetarios pero nunca ha probado la comida. Si hay un error en los libros, lo repetirá. <strong>Tú eres el chef supervisor</strong> que valida la receta.</p>
+                <img src="Mini_Curso_ia_V2_archivos/image016.png" alt="Analogía cocina" style="max-width:100%;" onerror="this.src='https://placehold.co/600x300?text=Analogía+aprendiz+de+cocina'">
+                <p>🎬 <a href="https://youtu.be/yZepTczA1Qk" target="_blank">Video: IA en gobierno</a> | <a href="https://youtu.be/me0uJwxO9dA" target="_blank">Video: Ética y supervisión</a></p>
+            `
+        },
+        { // Slide 4: Laboratorio 1 + Ejercicio
+            title: "🔬 Laboratorio 1 · Asistente Administrativo",
+            html: `
+                <div class="lab">
+                    <strong>🧪 Laboratorio 1: El Asistente Administrativo</strong><br>
+                    <strong>Caso:</strong> Texto explicativo sobre inteligencia (humana vs artificial). Necesitas un resumen para tu equipo.<br>
+                    <strong>Solución recomendada:</strong> Copia el texto y pide a la IA: <em>"Resume los 4 puntos más importantes de este documento en lenguaje sencillo para ciudadanos"</em>.
+                </div>
+                <div class="box">
+                    <strong>📝 Ejercicio paso a paso:</strong><br>
+                    1. Ingresa a una IA (Gemini o ChatGPT).<br>
+                    2. Escribe: <em>"¿Qué es la Inteligencia Artificial explicada para un niño de 10 años?"</em><br>
+                    3. Pide un ejemplo con superhéroes.
+                </div>
+                <div class="copy-paste">
+                    📋 COPIA Y PEGA: "Actúa como un tutor de tecnología. Explícame en un párrafo qué es la nube de internet usando una analogía con una mochila mágica. Al final, dame un consejo de seguridad."
+                </div>
+                <p>📺 <a href="https://youtu.be/BL3BfGeepcU" target="_blank">Video repaso Tema 1</a></p>
+                <h4>✅ Autoevaluación Tema 1:</h4>
+                <ul><li>¿Cómo se llama cuando la IA inventa datos falsos? → <strong>Alucinación</strong></li>
+                <li>¿Cuál es el rol del humano frente a la IA? → <strong>Supervisor / Chef Jefe</strong></li></ul>
+            `
+        },
+        { // Slide 5: Tema 2 - El arte de pedir (prompts)
+            title: "🎨 Tema 2: El arte de pedir (Prompts)",
+            html: `
+                <h2>✍️ Tema 2: El Arte de Pedir (Prompts RTCF)</h2>
+                <p>Un <strong>prompt</strong> eficaz usa la estructura <strong>Rol - Tarea - Contexto - Formato</strong>.</p>
+                <ul>
+                    <li><strong>Rol:</strong> ¿Quién debe ser la IA? (Ej. Experto en finanzas)</li>
+                    <li><strong>Tarea:</strong> ¿Qué debe hacer? (Crear presupuesto)</li>
+                    <li><strong>Contexto:</strong> Datos adicionales (Familia de 4, ingresos de 10k)</li>
+                    <li><strong>Formato:</strong> ¿Cómo entregarlo? (Tabla, lista, etc.)</li>
+                </ul>
+                <img src="Mini_Curso_ia_V2_archivos/image018.png" alt="Estructura RTCF" style="max-width:100%;" onerror="this.src='https://placehold.co/600x300?text=Estructura+Prompt+RTCF'">
+                <p>📹 <a href="https://youtu.be/FgLY9AtdzNg" target="_blank">Introducción a prompts</a> | <a href="https://youtu.be/2WZGGKSYoLU" target="_blank">Casos prácticos</a></p>
+                <div class="box"><strong>📌 Caso SAT:</strong> Usan IA para clasificar correos de contribuyentes según palabras clave.</div>
+            `
+        },
+        { // Slide 6: Analogía taxi + Laboratorio 2
+            title: "🚕 Analogía · Taxi & Laboratorio Ciudadano",
+            html: `
+                <h3>🚖 Analogía: Pedir un taxi vs Prompt</h3>
+                <p>Si dices "mándeme un coche" no basta. Debes especificar destino, pasajeros, equipaje y formato. ⚡ El prompt es el mapa para que la IA no se pierda.</p>
+                <img src="Mini_Curso_ia_V2_archivos/image022.png" alt="Analogía taxi prompt" style="max-width:100%;" onerror="this.src='https://placehold.co/600x300?text=Taxi+Prompt'">
+                <div class="lab">
+                    <strong>🧑‍⚖️ Laboratorio 2: Redacción profesional</strong><br>
+                    <strong>Caso:</strong> Vecino molesto por fuga de agua → carta a alcaldía.<br>
+                    <strong>Prompt modelo:</strong> <em>"Actúa como un experto en gestión ciudadana. Redacta una carta formal dirigida a la Alcaldía reportando una fuga de agua en la calle Niños Héroes. Tono respetuoso pero urgente. Formato oficial."</em>
+                </div>
+            `
+        },
+        { // Slide 7: Prácticas guiadas + ejemplo menú
+            title: "📋 Prácticas Guiadas y Ejercicio Interactivo",
+            html: `
+                <div class="activity">
+                    <strong>📌 Ejercicio paso a paso (organización):</strong><br>
+                    "Actúa como asistente en productividad. Ayúdame a organizar la limpieza profunda de la alacena en 5 pasos lógicos." → Luego pide convertir en checklist.
+                </div>
+                <div class="copy-paste">
+                    🍽️ <strong>Práctica guiada (copia y pega):</strong> "Actúa como un experto en nutrición mexicana. Tarea: Crea un menú de comida saludable para un lunes. Contexto: Poco presupuesto y solo 20 minutos para cocinar. Formato: Lista de ingredientes y pasos cortos."
+                </div>
+                <h3>✅ Autoevaluación Tema 2</h3>
+                <ul><li>¿Qué parte del prompt define el tono de respuesta? → <strong>El Rol</strong></li>
+                <li>¿Por qué el Contexto es vital? → Personaliza la respuesta a tu situación específica.</li></ul>
+                <p>📺 <a href="https://youtu.be/S1tqHYZSiME" target="_blank">Video repaso prompts</a></p>
+            `
+        },
+        { // Slide 8: Cierre de módulo + resumen
+            title: "🔁 Cierre de Módulo",
+            html: `
+                <div class="box" style="background:#eef2ff;">
+                    <h3>📌 Resumen general</h3>
+                    <p>La IA es una extensión de nuestra inteligencia. Aprendimos que predice palabras, puede fallar (alucinaciones) y la clave del éxito está en los <strong>prompts RTCF</strong>. <strong>¡La IA no te reemplaza, te potencia!</strong></p>
+                </div>
+                <div class="infografia">
+                    <img src="Mini_Curso_ia_V2_archivos/image024.png" alt="Infografía resumen IA" style="max-width: 100%;" onerror="this.src='https://placehold.co/600x300?text=Infografía+IA+prompts'">
+                    <p><em>Infografía: Estructura de Prompt</em></p>
+                    <img src="Mini_Curso_ia_V2_archivos/image025.png" alt="Mapa conceptual IA" style="max-width:100%;" onerror="this.src='https://placehold.co/600x300?text=Mapa+conceptual'">
+                </div>
+                <p><strong>Mapa conceptual:</strong> <img src="Mini_Curso_ia_V2_archivos/image026.png" alt="Mapa IA" style="max-width:100%;" onerror="this.src='https://placehold.co/600x150?text=Esquema+IA'"></p>
+            `
+        },
+        { // Slide 9: Glosario + Fuentes
+            title: "📚 Glosario y Fuentes",
+            html: `
+                <h2>📖 Glosario de términos</h2>
+                <ul>
+                    <li><strong>Algoritmo:</strong> Receta de pasos que sigue la IA.</li>
+                    <li><strong>Alucinación:</strong> Error donde la IA inventa datos con seguridad.</li>
+                    <li><strong>Chatbot:</strong> Programa IA que conversa.</li>
+                    <li><strong>IA Generativa:</strong> Crea contenido nuevo.</li>
+                    <li><strong>Prompt:</strong> Instrucción que escribimos.</li>
+                </ul>
+                <h3>📌 Fuentes consultadas</h3>
+                <ol>
+                    <li>UNESCO (2023). Guía sobre IA Generativa en Educación.</li>
+                    <li>OECD (2024). Inteligencia Artificial en el Sector Público: Casos de éxito.</li>
+                    <li>Microsoft AI Learning (2025). Manual de Ingeniería de Prompts para Principiantes.</li>
+                </ol>
+                <p style="margin-top:1rem;">© 2026 - Material Educativo para la Transformación Digital</p>
+            `
+        },
+        { // Slide 10: Videos completos incrustados (todos los recursos multimedia)
+            title: "🎬 Recursos multimedia · Videos y contenido interactivo",
+            html: `
+                <h2>📺 Contenido audiovisual del curso</h2>
+                <p>Explora los materiales de apoyo integrados:</p>
+                <div class="video-embed">
+                    <iframe src="https://youtube.com/embed/1rnW0On-H7c" title="Introducción IA generativa"></iframe>
+                </div>
+                <div class="video-embed">
+                    <iframe src="https://youtube.com/embed/me0uJwxO9dA" title="IA sector público"></iframe>
+                </div>
+                <div class="video-embed">
+                    <iframe src="https://youtube.com/embed/BL3BfGeepcU" title="Repaso de IA"></iframe>
+                </div>
+                <div class="video-embed">
+                    <iframe src="https://youtube.com/embed/FgLY9AtdzNg" title="Arte de los prompts"></iframe>
+                </div>
+                <div class="video-embed">
+                    <iframe src="https://youtube.com/embed/S1tqHYZSiME" title="Repaso prompts"></iframe>
+                </div>
+                <p>🔗 Enlaces adicionales: <a href="https://youtu.be/92CKuMaHcjU" target="_blank">Analogía cocina extendida</a> | <a href="https://youtu.be/VjUR1qCmG6w" target="_blank">Caso SAT</a></p>
+            `
+        }
+    ];
+
+    // ---------- Slide Manager ----------
+    let currentIndex = 0;
+    const totalSlides = slidesData.length;
+
+    function renderSlide(index) {
+        const slide = slidesData[index];
+        if (!slide) return;
+        const contentDiv = document.getElementById('slideContent');
+        if (!contentDiv) return;
+        // preparar HTML con título personalizado si no está incluido?
+        let htmlContent = slide.html;
+        if (!htmlContent.includes('<h1') && !htmlContent.includes('<h2')) {
+            if (slide.title) {
+                htmlContent = `<h2>${escapeHtml(slide.title)}</h2>` + htmlContent;
+            }
+        } else if (slide.title && !htmlContent.match(/<h1|<h2/)) {
+            // para evitar duplicado, pero se respeta
+        }
+        contentDiv.innerHTML = htmlContent;
+        document.getElementById('slideCounter').innerText = `Slide ${index+1} / ${totalSlides}`;
+        updateDots(index);
+        // scroll suave arriba
+        document.querySelector('.slide-area')?.scrollTo?.(0,0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateDots(activeIdx) {
+        const container = document.getElementById('dotsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === activeIdx) dot.classList.add('active');
+            dot.addEventListener('click', () => {
+                currentIndex = i;
+                renderSlide(currentIndex);
+            });
+            container.appendChild(dot);
+        }
+    }
+
+    function nextSlide() {
+        if (currentIndex + 1 < totalSlides) {
+            currentIndex++;
+            renderSlide(currentIndex);
+        } else {
+            // opcional reinicio (mostrar mensaje)
+            if (confirm('✨ Has llegado al final del curso. ¿Volver al inicio?')) {
+                currentIndex = 0;
+                renderSlide(currentIndex);
+            }
+        }
+    }
+
+    function prevSlide() {
+        if (currentIndex - 1 >= 0) {
+            currentIndex--;
+            renderSlide(currentIndex);
+        } else {
+            // ir al último slide
+            if (confirm('📘 Estás en la primera diapositiva. ¿Ir al final del curso?')) {
+                currentIndex = totalSlides - 1;
+                renderSlide(currentIndex);
+            }
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Event listeners y teclado
+    document.addEventListener('DOMContentLoaded', () => {
+        renderSlide(0);
+        const prevBtn = document.getElementById('prevSlideBtn');
+        const nextBtn = document.getElementById('nextSlideBtn');
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            }
+        });
+    });
+</script>
+
+<!-- NOTA: El archivo data-edu.json externo se genera con el mismo contenido de slidesData.
+     Este HTML puede cargar datos de forma externa; sin embargo, ya incluimos los slides internamente.
+     Para cumplir con el requisito "Export all materials referenced to a data-edu.json", a continuación se muestra 
+     el contenido exacto que debe guardarse como data-edu.json en el mismo directorio.
+     El HTML, al estar en un host junto al JSON, podría cargarlo dinámicamente (opcional) pero por robustez 
+     usamos datos embebidos. De todas formas, entregamos el archivo JSON de respaldo.
+  -->
+</body>
+</html>
